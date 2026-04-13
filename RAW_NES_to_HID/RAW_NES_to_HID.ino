@@ -47,9 +47,8 @@ void loop() {
   if (btns[2]) buttons |= (1 << 6); // Select
   if (btns[3]) buttons |= (1 << 7); // Start
 
-  // =========================
   // HAT (direcional)
-  // =========================
+
   uint8_t hat = 0; 
 
   if (btns[4]) hat = 1; // up
@@ -63,9 +62,7 @@ void loop() {
   if (btns[5] && btns[6]) hat = 6;
   if (btns[4] && btns[6]) hat = 8;
 
-  // =========================
   // ENVIA HID
-  // =========================
   gamepad.send(
     0, 0, 0,   // x, y, z
     0, 0, 0,   // rz, rx, ry
