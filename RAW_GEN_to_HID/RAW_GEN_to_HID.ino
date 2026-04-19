@@ -1,48 +1,53 @@
-const int LED[2] = {7, 8};
-const int botao[2] = {2, 3};
-#define QUANTIDADE_BOTOES 2
-
-bool nivel_passado_botao[QUANTIDADE_BOTOES] = {0};
-bool nivel_antes_debounce_botao[QUANTIDADE_BOTOES] = {0};
-bool leitura_atual[QUANTIDADE_BOTOES] = {0};
-unsigned long ultima_mudanca_botao_entrada[QUANTIDADE_BOTOES] = {0};
-int debounce_Delay[QUANTIDADE_BOTOES] = {0};
-int contagem[2] = {0, 0};
+#define PIN_UP     4
+#define PIN_DOWN   5
+#define PIN_LEFT   6
+#define PIN_RIGHT  7
+#define PIN_B      15
+#define PIN_C      17
+#define PIN_SEL    16
 
 void setup() {
-  for (int i = 0; i < QUANTIDADE_BOTOES; i++){
-    nivel_passado_botao[i] = HIGH;
-    nivel_antes_debounce_botao[i] = HIGH;
-    leitura_atual[i] = HIGH;
-    ultima_mudanca_botao_entrada[i] = 0;
-    debounce_Delay[i] = 100;
+  Serial.begin(115200);
 
-    pinMode(botao[i], INPUT_PULLUP);
-    pinMode(LED[i], OUTPUT);
-  }
-  Serial.begin(9600);
+  pinMode(PIN_UP, INPUT);
+  pinMode(PIN_DOWN, INPUT);
+  pinMode(PIN_LEFT, INPUT);
+  pinMode(PIN_RIGHT, INPUT);
+  pinMode(PIN_B, INPUT);
+  pinMode(PIN_C, INPUT);
+
+  pinMode(PIN_SEL, OUTPUT);
 }
 
 void loop() {
-  for(int i = 0; i < QUANTIDADE_BOTOES; i++) {
-    leitura_atual[i] = digitalRead(botao[i]);
-    if (leitura_atual[i] != nivel_antes_debounce_botao[i]) {
-      ultima_mudanca_botao_entrada[i] = millis();
-    }
-    nivel_antes_debounce_botao[i] = leitura_atual[i];
-    if ((millis() - ultima_mudanca_botao_entrada[i]) > debounce_Delay[i]) {
-      if (leitura_atual[i] != nivel_passado_botao[i]) {
-        nivel_passado_botao[i] = leitura_atual[i];
-        if (nivel_passado_botao[i] == LOW){
-          contagem[i]++;
-          Serial.println(String("Botão: ") + botao[i] + " Contagem: " + contagem[i]);
-            if (contagem[i] >= 4) {
-              digitalWrite(LED[i], !digitalRead(LED[i]));
-              contagem[i] = 0;
-            }
+  bool up, down, left, right;
+  bool a, b, c, start;
 
-        }
-      }
-    }
-  }
+  digitalWrite(PIN_SEL, HIGH);
+  delayMicroseconds(50);
+
+  up    = !digitalRead(PIN_UP);
+  down  = !digitalRead(PIN_DOWN);
+  left  = !digitalRead(PIN_LEFT);
+  right = !digitalRead(PIN_RIGHT);
+  b     = !digitalRead(PIN_B);
+  c     = !digitalRead(PIN_C);
+
+  
+  digitalWrite(PIN_SEL, LOW);
+  delayMicroseconds(50);
+
+  a     = !digitalRead(PIN_B);
+  start = !digitalRead(PIN_C);
+
+  Serial.print("U:"); Serial.print(up);
+  Serial.print(" D:"); Serial.print(down);
+  Serial.print(" L:"); Serial.print(left);
+  Serial.print(" R:"); Serial.print(right);
+  Serial.print(" A:"); Serial.print(a);
+  Serial.print(" B:"); Serial.print(b);
+  Serial.print(" C:"); Serial.print(c);
+  Serial.print(" START:"); Serial.println(start);
+
+  delay(100);
 }
