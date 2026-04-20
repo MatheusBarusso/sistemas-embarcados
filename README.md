@@ -10,12 +10,12 @@ Repositório direcionado para o projeto da disciplina de Sistemas Embarcados
 - GND -> Amarelo
 
 ## Genesis 6 button
-- Preto -> 4
-- Amarelo -> 6
-- Azul -> 7
-- Cinza -> 3
-- Laranja -> 2
-- Vermelho -> 5 - VCC
-- Branco -> 8 - GND
-- Verde -> 9 
-- Marrom -> 1
+- UP -> 1 -> Vermelho
+- DOWN -> 2 -> Preto
+- LEFT -> 3 -> Cinza
+- RIGHT -> 4 -> Laranja
+- VCC -> 5 -> Marrom
+- B -> 6 -> Verde
+- SELECT -> 7 -> Branco
+- GND -> 8 -> Azul
+- C -> 9 -> Amarelo
