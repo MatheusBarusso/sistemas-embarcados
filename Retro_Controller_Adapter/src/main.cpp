@@ -31,6 +31,10 @@ Joystick controller(1, 2, 42);
 int current_item = 0;
 bool is_selected = false;
 
+#define LED_NES 13
+#define LED_GEN 14
+#define LED_NGC 3
+
 // 'euu', 128x32px
 // 'Design sem nome (2)', 128x32px
 
@@ -554,11 +558,19 @@ void select_image() {
 void setup() {
   Serial.begin(115200);
   delay(1000);
+
+  pinMode(LED_NES, OUTPUT);
+  pinMode(LED_GEN, OUTPUT);
+  pinMode(LED_NGC, OUTPUT);
+  digitalWrite(LED_NES, LOW);
+  digitalWrite(LED_GEN, LOW);
+  digitalWrite(LED_NGC, LOW);
   
   // 1. Start the Joystick and controllers
   controller.begin();
   genesis.begin();
   nes.begin();
+  USB.productName("Retro USB Adapter");
   USB.begin();
   gamepad.begin();
 
@@ -596,23 +608,43 @@ void loop() {
   }
 
   if (is_selected) {
-    ControllerState s = {0, 0};
+    ControllerState s = {0, 0, 0, 0, 0, 0, 0, 0};
 
-    // current_item 0 = NES, current_item 1 = GENESIS, baseando-se no seu array de imagens
+
     if (current_item == 0) { 
+      digitalWrite(LED_NES, HIGH);
+      digitalWrite(LED_GEN, LOW);
+      digitalWrite(LED_NGC, LOW);
       s = nes.read();
     } 
     else if (current_item == 1) {
+      digitalWrite(LED_GEN, HIGH);
+      digitalWrite(LED_NES, LOW);
+      digitalWrite(LED_NGC, LOW);
       s = genesis.read();
+    }
+    else if (current_item == 2) {
+      digitalWrite(LED_NGC, HIGH); 
+      digitalWrite(LED_GEN, LOW);
+      digitalWrite(LED_NES, LOW);
     }
 
     gamepad.send(
-      0, 0, 0,   // x, y, z
-      0, 0, 0,   // rz, rx, ry
+      s.x, s.y, s.z,     
+      s.rz, s.rx, s.ry,  
       s.hat,
       s.buttons
     );
 
     delay(10);
+  }
+  else {
+    // Quando volta para o Menu (is_selected = false), desliga ambos os LEDs
+    digitalWrite(LED_NES, LOW);
+    digitalWrite(LED_GEN, LOW);
+    digitalWrite(LED_NGC, LOW);
+    
+    // Envia estado neutro para o PC
+    gamepad.send(0, 0, 0, 0, 0, 0, 0, 0);
   }
 }
