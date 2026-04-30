@@ -19,3 +19,8 @@ Repositório direcionado para o projeto da disciplina de Sistemas Embarcados
 - SELECT -> 7 -> Branco
 - GND -> 8 -> Azul
 - C -> 9 -> Amarelo
+
+## Gamecube Controller
+- DATA -> Vermelho
+- VCC -> Preto
+- GND -> Marrom
