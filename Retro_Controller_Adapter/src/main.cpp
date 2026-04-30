@@ -13,8 +13,8 @@
 #define SCREEN_HEIGHT 64
 
 // Your new I2C pins
-#define SDA_PIN 11
-#define SCL_PIN 12
+#define SDA_PIN 35
+#define SCL_PIN 48
 
 // Create the display object
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
@@ -26,14 +26,14 @@ NESController nes(18, 9, 8);
 
 // --- CONTROLLER CONFIGURATION ---
 // Pins: X on 5, Y on 4, Button on 6 
-Joystick controller(1, 2, 42);
+Joystick controller(42, 2, 1);
 
 int current_item = 0;
 bool is_selected = false;
 
 #define LED_NES 13
 #define LED_GEN 14
-#define LED_NGC 3
+#define LED_NGC 12
 
 // 'euu', 128x32px
 // 'Design sem nome (2)', 128x32px
@@ -558,6 +558,7 @@ void select_image() {
 void setup() {
   Serial.begin(115200);
   delay(1000);
+
 
   pinMode(LED_NES, OUTPUT);
   pinMode(LED_GEN, OUTPUT);
