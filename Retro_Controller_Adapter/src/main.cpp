@@ -23,7 +23,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 // HID and definition of PINOUTS
 USBHIDGamepad gamepad;
 GenesisController genesis(4, 5, 6, 7, 15, 17, 16);
-NESController nes(18, 9, 8);
+NESController nes(18, 9, 8); //latch pulse data
 NGCController ngc(10);
 
 // --- CONTROLLER CONFIGURATION ---

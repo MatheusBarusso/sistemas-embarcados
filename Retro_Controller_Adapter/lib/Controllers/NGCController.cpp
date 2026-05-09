@@ -55,7 +55,7 @@ void NGCController::sendByte(uint8_t b) {
 
 int NGCController::readBit() {
 #if defined(ARDUINO_ARCH_ESP32)
-    uint32_t t_timeout = _cpuFreqMHz * 8;
+    uint32_t t_timeout = _cpuFreqMHz * 50;
     uint32_t start_wait = xthal_get_ccount();
 
     while (((GPIO.in >> _dataPin) & 0x01) == 1) {
@@ -149,7 +149,7 @@ ControllerState NGCController::read() {
     if (dpad_up   && dpad_left)     state.hat = 8;
 
     int16_t lx = (int16_t)response[2] - 128;
-    int16_t ly = (int16_t)response[3] - 128;
+    int16_t ly = 128 - (int16_t)response[3];
     int16_t cx = (int16_t)response[4] - 128;
     int16_t cy = (int16_t)response[5] - 128;
     int16_t lt = (int16_t)response[6] - 128;
